@@ -7,6 +7,11 @@ void Tileset_CreateFromTexture(gg_tileset_t* tileset, gg_texture_t* texture, uin
 }
 
 void Tileset_DrawTile(gg_tileset_t* tileset, gg_window_t* window, uint32_t x, uint32_t y, uint32_t tile_id) {
+    tile_id--; // Tile [1] -> Tile [0]
     Window_DrawSubTexture(window, tileset->texture, x, y, (tile_id % tileset->tiles_wide) * tileset->tile_size,
                           (tile_id / tileset->tiles_wide) * tileset->tile_size, tileset->tile_size, tileset->tile_size);
+}
+
+void Tileset_Destroy(gg_tileset_t* tileset) {
+    // NOTE: Nothing here for the Raylib implementation
 }

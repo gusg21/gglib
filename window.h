@@ -1,5 +1,5 @@
-#if !defined(WINDOW_H)
-#define WINDOW_H
+#if !defined(GG_WINDOW_H)
+#define GG_WINDOW_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -31,4 +31,4 @@ void Window_DrawSubTexture(gg_window_t* window, gg_texture_t* texture, uint32_t 
                            uint32_t sw, uint32_t sh);
 void Window_DrawDebugFPS(gg_window_t* window);
 
-#endif  // WINDOW_H
+#endif  // GG_WINDOW_H

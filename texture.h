@@ -8,5 +8,6 @@ typedef struct gg_texture {
 } gg_texture_t;
 
 void Texture_Get(gg_texture_t* texture, const char* name);
+void Texture_GetRaw(gg_texture_t* texture, const char* path);
 
 #endif  // TEXTURE_H

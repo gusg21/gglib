@@ -1,5 +1,5 @@
-#if !defined(COLOR_H)
-#define COLOR_H
+#if !defined(GG_COLOR_H)
+#define GG_COLOR_H
 
 #include <stdint.h>
 
@@ -13,4 +13,4 @@ typedef struct gg_color {
 #define COLA(_r, _g, _b, _a) \
     (gg_color_t) { .r = (_r), .g = (_g), .b = (_b), .a = (_a) }
 
-#endif  // COLOR_H
+#endif  // GG_COLOR_H

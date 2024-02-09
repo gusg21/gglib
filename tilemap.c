@@ -1,6 +1,11 @@
 #include "tilemap.h"
+#include "tileset.h"
 
 #include <stdlib.h>
+#include <string.h>
+
+#define CUTE_TILED_IMPLEMENTATION
+#include "external/cute_tiled.h"
 
 void Tilemap_Create(gg_tilemap_t* tilemap, gg_tileset_t* tileset, uint32_t width, uint32_t height) {
     tilemap->tileset = tileset;
@@ -19,4 +24,6 @@ void Tilemap_Draw(gg_tilemap_t* tilemap, gg_window_t* window) {
     }
 }
 
-void Tilemap_Destroy(gg_tilemap_t* tilemap) {}
+void Tilemap_Destroy(gg_tilemap_t* tilemap) {
+    free(tilemap->data);
+}

@@ -9,6 +9,7 @@ void Window_CreateWindowed(gg_window_t* window, const char* title, uint32_t widt
     }
 
     InitWindow(width, height, title);
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
     window->width = width;
     window->height = height;
     window->initialized = IsWindowReady();

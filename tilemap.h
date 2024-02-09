@@ -1,5 +1,5 @@
-#if !defined(TILEMAP_H)
-#define TILEMAP_H
+#if !defined(GG_TILEMAP_H)
+#define GG_TILEMAP_H
 
 #include "tileset.h"
 
@@ -15,4 +15,4 @@ void Tilemap_Create(gg_tilemap_t* tilemap, gg_tileset_t* tileset, uint32_t width
 void Tilemap_Draw(gg_tilemap_t* tilemap, gg_window_t* window);
 void Tilemap_Destroy(gg_tilemap_t* tilemap);
 
-#endif // TILEMAP_H
+#endif // GG_TILEMAP_H
