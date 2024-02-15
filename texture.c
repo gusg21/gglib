@@ -1,5 +1,6 @@
 #include "texture.h"
 
+#include <stdint.h>
 #include <stdio.h>
 
 void Texture_Get(gg_texture_t* texture, const char* name) {
@@ -9,6 +10,8 @@ void Texture_Get(gg_texture_t* texture, const char* name) {
     Texture_GetRaw(texture, formatted_path);
 }
 
-void Texture_GetRaw(gg_texture_t* texture, const char* path) {
-    texture->_handle = LoadTexture(path);
-}
+void Texture_GetRaw(gg_texture_t* texture, const char* path) { texture->_handle = LoadTexture(path); }
+
+uint32_t Texture_GetWidth(gg_texture_t* texture) { return texture->_handle.width; }
+
+uint32_t Texture_GetHeight(gg_texture_t* texture) { return texture->_handle.height; }

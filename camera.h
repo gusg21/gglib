@@ -12,4 +12,4 @@ typedef struct gg_camera {
 
 void Camera_Create(gg_camera_t* camera, uint32_t window_w, uint32_t window_h, uint32_t x, uint32_t y);
 
-#endif // GG_CAMERA_H
+#endif  // GG_CAMERA_H

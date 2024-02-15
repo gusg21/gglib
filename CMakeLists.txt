@@ -1,11 +1,16 @@
-add_library(gg_platform STATIC
+add_library(gglib STATIC
 
     camera.c
+    grid.c
+    log.c
+    scene.c
     texture.c
     tiled.c
-    tilemap.c
+    tiledobject.c
     tileset.c
+    transform.c
+    vector.c
     window.c
 
     )
-target_link_libraries(gg_platform raylib)
+target_link_libraries(gglib raylib)

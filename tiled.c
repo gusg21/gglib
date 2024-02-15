@@ -1,36 +1,90 @@
 #include "tiled.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "external/cute_tiled.h"
 
-void TiledMap_LoadFromTMJ(gg_tiled_map_t* tmap, const char* path) {
-    cute_tiled_map_t* map = cute_tiled_load_map_from_file(path, NULL);
-    cute_tiled_layer_t* layer = &map->layers[0];
-    cute_tiled_tileset_t* tileset = &map->tilesets[0];
-
-    if (strcmp(layer->type.ptr, "tilelayer") == 0) {
+static void TiledMap_S_LoadLayer(gg_tiled_map_t* tmap, cute_tiled_map_t* map, cute_tiled_tileset_t* tileset,
+                                 cute_tiled_layer_t* layer, const char* path) {
+    if (TextIsEqual(layer->type.ptr, "tilelayer")) {
         // Load texture
         const char* full_path = TextFormat("%s/%s", GetDirectoryPath(path), tileset->image.ptr);
         Texture_GetRaw(&tmap->tex, full_path);
-        
+
         // Load tileset
         Tileset_CreateFromTexture(&tmap->set, &tmap->tex, tileset->tilewidth, tileset->columns);
 
         // Load tilemap
-        Tilemap_Create(&tmap->map, &tmap->set, map->width, map->height);
+        Grid_Create(&tmap->grid, map->width, map->height);
 
         // Copy in tile data
-        memcpy(tmap->map.data, layer->data, layer->width * layer->height * sizeof(uint32_t));
-    } else {
-        // TODO: Error!
+        memcpy(tmap->grid.data, layer->data, layer->width * layer->height * sizeof(uint32_t));
+    } else if (TextIsEqual(layer->type.ptr, "objectgroup")) {
+        cute_tiled_object_t* tobject = layer->objects;
+        gg_tiled_object_t* gobject = tmap->objs;
+        while (tobject != NULL) {
+            gobject->name = malloc(sizeof(char) * 256);
+            TextCopy(gobject->name, tobject->name.ptr);
+
+            gobject->x = tobject->x;
+            gobject->y = tobject->y;
+
+            if (tobject->next != NULL) {
+                gobject->next = malloc(sizeof(gg_tiled_object_t));
+            } else {
+                gobject->next = NULL;
+            }
+
+            gobject = gobject->next;
+            tobject = tobject->next;
+        }
+    }
+}
+
+void TiledMap_LoadFromTMJ(gg_tiled_map_t* tmap, const char* path) {
+    tmap->objs = malloc(sizeof(gg_tiled_object_t));
+
+    cute_tiled_map_t* map = cute_tiled_load_map_from_file(path, NULL);
+    cute_tiled_tileset_t* tileset = &map->tilesets[0];
+
+    cute_tiled_layer_t* layer = map->layers;
+    while (layer != NULL) {
+        TiledMap_S_LoadLayer(tmap, map, tileset, layer, path);
+
+        layer = layer->next;
     }
 
     cute_tiled_free_map(map);
 }
 
+int32_t TiledMap_GetWidth(gg_tiled_map_t* tmap) { return tmap->grid.width * tmap->set.tile_size; }
+
+int32_t TiledMap_GetHeight(gg_tiled_map_t* tmap) { return tmap->grid.height * tmap->set.tile_size; }
+
+gg_tiled_object_t* TiledMap_FindObject(gg_tiled_map_t* tmap, const char* name) {
+    gg_tiled_object_t* obj = tmap->objs;
+    while (obj != NULL) {
+        if (TextIsEqual(obj->name, name)) {
+            return obj;
+        }
+        obj = obj->next;
+    }
+    return NULL;
+}
+
+void TiledMap_Draw(gg_tiled_map_t* tmap, gg_window_t* window, int32_t x, int32_t y) {
+    Grid_Draw(&tmap->grid, window, &tmap->set, x, y);
+}
+
+void TiledMap_DrawCentered(gg_tiled_map_t* tmap, gg_window_t* window, int32_t x, int32_t y) {
+    uint32_t grid_w = TiledMap_GetWidth(tmap);
+    uint32_t grid_h = TiledMap_GetHeight(tmap);
+    TiledMap_Draw(tmap, window, x - grid_w / 2, y - grid_h / 2);
+}
+
 void TiledMap_Destroy(gg_tiled_map_t* tmap) {
-    Tilemap_Destroy(&tmap->map);
+    Grid_Destroy(&tmap->grid);
     Tileset_Destroy(&tmap->set);
     // NOTE: No "Texture_Destroy()" because textures are assumed to be lightweight pointers
     // to full textures allocated elsewhere.
