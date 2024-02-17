@@ -23,6 +23,10 @@ void Assets_Load(gg_assets_t* assets, gg_asset_type_e type, const char* name) {
             sprintf(formatted_path, "assets/%s.tmj", name);
             TiledMap_LoadFromTMJ(&pair->asset.data.as_tiled_map, formatted_path);
             break;
+        case ASSET_SCRIPT:
+            sprintf(formatted_path, "assets/%s.lua", name);
+            Script_LoadFromLua(&pair->asset.data.as_script, formatted_path);
+            break;
         default:
             printf("Unsupported asset type %d...", type);
             break;
@@ -35,27 +39,37 @@ void Assets_Load(gg_assets_t* assets, gg_asset_type_e type, const char* name) {
     }
 
     // Append to linked list
+    // TODO: Might be broken???? I was working on it when it broke (2/16/24) and
+    // it started working suddenly. not sure what's up, good luck soldier
     gg_asset_pair_t* last_pair = assets->asset_list;
-    while (assets->asset_list->next != NULL) {
-        last_pair = assets->asset_list->next;
+    while (last_pair->next != NULL) {
+        last_pair = last_pair->next;
     }
     last_pair->next = pair;
 }
 
-gg_asset_t* Assets_Get(gg_assets_t* assets, const char* name) {
+// gg_asset_t* Assets_Get(gg_assets_t* assets, const char* name) {
+//     gg_assets_t* asset = NULL;
+//     Assets_SafeGet(assets, &asset, name);
+//     return asset;
+// }
+
+bool Assets_Get(gg_assets_t* assets, gg_asset_t** asset_ptr, const char* name) {
     gg_asset_pair_t* pair = assets->asset_list;
 
-    if (pair == NULL) return NULL;
+    if (pair == NULL) return false;
 
     while (pair != NULL) {
         if (TextIsEqual(pair->name, name)) {
-            return &pair->asset;
+            (*asset_ptr) = &pair->asset;
+            return true;
         }
 
         pair = pair->next;
     }
 
-    return NULL;
+    printf("WARN: Unable to GET asset name %s!", name);
+    return false;
 }
 
 void Assets_Destroy(gg_assets_t* assets) {

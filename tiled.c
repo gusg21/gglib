@@ -30,6 +30,14 @@ static void TiledMap_S_LoadLayer(gg_tiled_map_t* tmap, cute_tiled_map_t* map, cu
             gobject->x = tobject->x;
             gobject->y = tobject->y;
 
+            for (uint32_t prop_idx = 0; prop_idx < tobject->property_count; prop_idx++) {
+                cute_tiled_property_t* prop = &tobject->properties[prop_idx];   
+                if (TextIsEqual(TextToLower(prop->name.ptr), "script")) {
+                    gobject->script_name = calloc(sizeof(char), 128);
+                    TextCopy(gobject->script_name, prop->data.string.ptr);
+                }
+            }
+
             if (tobject->next != NULL) {
                 gobject->next = malloc(sizeof(gg_tiled_object_t));
             } else {

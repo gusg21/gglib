@@ -1,5 +1,5 @@
-#if !defined(TEXTURE_H)
-#define TEXTURE_H
+#if !defined(GG_TEXTURE_H)
+#define GG_TEXTURE_H
 
 #include <raylib.h>  // Platform specific
 #include <stdint.h>
@@ -13,4 +13,4 @@ void Texture_LoadFromFile(gg_texture_t* texture, const char* path);
 uint32_t Texture_GetWidth(gg_texture_t* texture);
 uint32_t Texture_GetHeight(gg_texture_t* texture);
 
-#endif  // TEXTURE_H
+#endif  // GG_TEXTURE_H
