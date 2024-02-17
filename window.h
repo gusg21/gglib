@@ -51,7 +51,7 @@ void Window_DrawTextureCenteredSR(gg_window_t* window, gg_texture_t* texture, ui
                                   float rotation);
 void Window_DrawSubTexture(gg_window_t* window, gg_texture_t* texture, int32_t x, int32_t y, uint32_t sx, uint32_t sy,
                            uint32_t sw, uint32_t sh);
-void Window_DrawRectangle(gg_window_t* window, int32_t x, int32_t y, uint32_t w, uint32_t h, Color color);
+void Window_DrawRectangle(const gg_window_t* window, int32_t x, int32_t y, uint32_t w, uint32_t h, gg_color_t color);
 void Window_DrawDebugFPS(gg_window_t* window);
 void Window_DrawSpaceOrigin(gg_window_t* window);
 

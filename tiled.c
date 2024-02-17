@@ -10,7 +10,7 @@ static void TiledMap_S_LoadLayer(gg_tiled_map_t* tmap, cute_tiled_map_t* map, cu
     if (TextIsEqual(layer->type.ptr, "tilelayer")) {
         // Load texture
         const char* full_path = TextFormat("%s/%s", GetDirectoryPath(path), tileset->image.ptr);
-        Texture_GetRaw(&tmap->tex, full_path);
+        Texture_LoadFromFile(&tmap->tex, full_path);
 
         // Load tileset
         Tileset_CreateFromTexture(&tmap->set, &tmap->tex, tileset->tilewidth, tileset->columns);

@@ -9,4 +9,4 @@ typedef struct gg_transform {
     gg_v2_t scale;
 } gg_transform_t;
 
-#endif // GG_TRANSFORM_H
+#endif  // GG_TRANSFORM_H

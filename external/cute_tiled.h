@@ -344,8 +344,8 @@ struct cute_tiled_tile_descriptor_t {
     cute_tiled_frame_t* animation;  // An array of `cute_tiled_frame_t`'s. Can be NULL.
     cute_tiled_string_t image;  // Image used for a tile in a tileset of type collection of images (relative path from
                                 // map file to source image). Tileset is a collection of images if image.ptr isn't NULL.
-    int imageheight;  // Image height of a tile in a tileset of type collection of images.
-    int imagewidth;   // Image width of a tile in a tileset of type collection of images.
+    int imageheight;            // Image height of a tile in a tileset of type collection of images.
+    int imagewidth;             // Image width of a tile in a tileset of type collection of images.
     cute_tiled_layer_t*
         objectgroup;     // Linked list of layers of type `objectgroup` only. Useful for holding collision info.
     int property_count;  // Number of elements in the `properties` array.

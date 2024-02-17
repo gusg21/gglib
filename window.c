@@ -15,7 +15,7 @@ void Window_CreateWindowed(gg_window_t* window, const char* title, uint32_t widt
     window->initialized = IsWindowReady();
     window->fullscreen = false;  // TODO: Ensure that the window is windowed?
 
-    SetTargetFPS(60);
+    SetTargetFPS(10000);
 }
 
 void Window_CreateFullscreen(gg_window_t* window, const char* title) {
@@ -98,7 +98,7 @@ void Window_DrawSubTexture(gg_window_t* window, gg_texture_t* texture, int32_t x
     DrawTextureRec(texture->_handle, (Rectangle){sx, sy, sw, sh}, (Vector2){x, y}, WHITE);
 }
 
-void Window_DrawRectangle(gg_window_t* window, int32_t x, int32_t y, uint32_t w, uint32_t h, gg_color_t color) {
+void Window_DrawRectangle(const gg_window_t* window, int32_t x, int32_t y, uint32_t w, uint32_t h, gg_color_t color) {
     DrawRectangle(x, y, w, h, (Color){color.r, color.g, color.b, color.a});
 }
 
