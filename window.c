@@ -77,15 +77,15 @@ void Window_ClearScreen(gg_window_t* window, gg_color_t color) {
     ClearBackground((Color){.r = color.r, .g = color.g, .b = color.b, .a = color.a});
 }
 
-void Window_DrawTexture(gg_window_t* window, gg_texture_t* texture, uint32_t x, uint32_t y) {
+void Window_DrawTexture(gg_window_t* window, gg_texture_t* texture, int32_t x, int32_t y) {
     DrawTexture(texture->_handle, x, y, WHITE);
 }
 
-void Window_DrawTextureCentered(gg_window_t* window, gg_texture_t* texture, uint32_t x, uint32_t y) {
+void Window_DrawTextureCentered(gg_window_t* window, gg_texture_t* texture, int32_t x, int32_t y) {
     DrawTexture(texture->_handle, x - Texture_GetWidth(texture) / 2.f, y - Texture_GetHeight(texture) / 2.f, WHITE);
 }
 
-void Window_DrawTextureCenteredSR(gg_window_t* window, gg_texture_t* texture, uint32_t x, uint32_t y, float scale,
+void Window_DrawTextureCenteredSR(gg_window_t* window, gg_texture_t* texture, int32_t x, int32_t y, float scale,
                                   float rotation) {
     DrawTextureEx(
         texture->_handle,

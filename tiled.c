@@ -5,9 +5,13 @@
 
 #include "external/cute_tiled.h"
 
+#include "log.h"
+
 static void TiledMap_S_LoadLayer(gg_tiled_map_t* tmap, cute_tiled_map_t* map, cute_tiled_tileset_t* tileset,
                                  cute_tiled_layer_t* layer, const char* path) {
     if (TextIsEqual(layer->type.ptr, "tilelayer")) {
+        Log_Info("TILED: Loading tile layer");
+
         // Load texture
         const char* full_path = TextFormat("%s/%s", GetDirectoryPath(path), tileset->image.ptr);
         Texture_LoadFromFile(&tmap->tex, full_path);
@@ -21,6 +25,8 @@ static void TiledMap_S_LoadLayer(gg_tiled_map_t* tmap, cute_tiled_map_t* map, cu
         // Copy in tile data
         memcpy(tmap->grid.data, layer->data, layer->width * layer->height * sizeof(uint32_t));
     } else if (TextIsEqual(layer->type.ptr, "objectgroup")) {
+        Log_Info("TILED: Loading object layer");
+
         cute_tiled_object_t* tobject = layer->objects;
         gg_tiled_object_t* gobject = tmap->objs;
         while (tobject != NULL) {

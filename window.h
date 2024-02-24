@@ -45,9 +45,9 @@ void Window_EndCameraDrawing(gg_window_t* window, gg_camera_t* camera);
 
 // Drawing
 void Window_ClearScreen(gg_window_t* window, gg_color_t color);
-void Window_DrawTexture(gg_window_t* window, gg_texture_t* texture, uint32_t x, uint32_t y);
-void Window_DrawTextureCentered(gg_window_t* window, gg_texture_t* texture, uint32_t x, uint32_t y);
-void Window_DrawTextureCenteredSR(gg_window_t* window, gg_texture_t* texture, uint32_t x, uint32_t y, float scale,
+void Window_DrawTexture(gg_window_t* window, gg_texture_t* texture, int32_t x, int32_t y);
+void Window_DrawTextureCentered(gg_window_t* window, gg_texture_t* texture, int32_t x, int32_t y);
+void Window_DrawTextureCenteredSR(gg_window_t* window, gg_texture_t* texture, int32_t x, int32_t y, float scale,
                                   float rotation);
 void Window_DrawSubTexture(gg_window_t* window, gg_texture_t* texture, int32_t x, int32_t y, uint32_t sx, uint32_t sy,
                            uint32_t sw, uint32_t sh);

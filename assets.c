@@ -1,11 +1,18 @@
 #include "assets.h"
+#include "log.h"
 
-#include <stdio.h>
 #include <raylib.h>
+#include <stdio.h>
 
-void Assets_Create(gg_assets_t* assets) { assets->asset_list = NULL; }
+void Assets_Create(gg_assets_t* assets) {
+    assets->asset_list = NULL;
+}
 
-void Assets_Load(gg_assets_t* assets, gg_asset_type_e type, const char* name) {
+void Assets_LoadInternals(gg_assets_t* assets, gg_window_t* window, gg_state_t* state) {
+    Assets_Load(assets, window, state, ASSET_SCRIPT, "gg/map");
+}
+
+void Assets_Load(gg_assets_t* assets, gg_window_t* window, gg_state_t* state, gg_asset_type_e type, const char* name) {
     gg_asset_pair_t* pair = malloc(sizeof(gg_asset_pair_t));
 
     pair->name = calloc(256, sizeof(char));
@@ -27,13 +34,19 @@ void Assets_Load(gg_assets_t* assets, gg_asset_type_e type, const char* name) {
             sprintf(formatted_path, "assets/%s.lua", name);
             Script_LoadFromLua(&pair->asset.data.as_script, formatted_path);
             break;
+        case ASSET_SCENE:
+            // This asset is FANCY (read: painful) and needs the asset manager itself!!!
+            // Yippee!!!
+            sprintf(formatted_path, "assets/%s.json", name);
+            Scene_LoadFromJson(&pair->asset.data.as_scene, assets, window, state, formatted_path);
+            break;
         default:
-            printf("Unsupported asset type %d...", type);
+            printf("Unsupported asset type %d...\n", type);
             break;
     }
 
     // Easy out if first pair
-    if (assets->asset_list == NULL) {  
+    if (assets->asset_list == NULL) {
         assets->asset_list = pair;
         return;
     }
@@ -54,6 +67,23 @@ void Assets_Load(gg_assets_t* assets, gg_asset_type_e type, const char* name) {
 //     return asset;
 // }
 
+bool Assets_Has(gg_assets_t* assets, const char* name) { 
+    gg_asset_pair_t* pair = assets->asset_list;
+
+    if (pair == NULL) return false;
+
+    while (pair != NULL) {
+        if (TextIsEqual(pair->name, name)) {
+            return true;
+        }
+
+        pair = pair->next;
+    }
+
+    Log_Warn(Log_TextFormat("ASSETS: Unable to HAS() asset name %s!", name));
+    return false;
+}
+
 bool Assets_Get(gg_assets_t* assets, gg_asset_t** asset_ptr, const char* name) {
     gg_asset_pair_t* pair = assets->asset_list;
 
@@ -68,7 +98,7 @@ bool Assets_Get(gg_assets_t* assets, gg_asset_t** asset_ptr, const char* name) {
         pair = pair->next;
     }
 
-    printf("WARN: Unable to GET asset name %s!", name);
+    Log_Warn(Log_TextFormat("ASSETS: Unable to GET() asset name %s!", name));
     return false;
 }
 
